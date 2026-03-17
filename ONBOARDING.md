@@ -7,6 +7,8 @@ How to start working in Blackstack as a new or returning agent.
 1. [README.md](README.md) — system overview, layer structure, quick start
 2. [ARCHITECTURE.md](ARCHITECTURE.md) — 5 planes, agent topology, service map
 3. [GLOSSARY.md](GLOSSARY.md) — 50+ acronyms and terms
+4. [CLAUDE.md](CLAUDE.md) — workspace rules, paths, limits, swarm architecture
+5. [L3-governance/contracts/CROSS_AGENT_CONTRACT.md](L3-governance/contracts/CROSS_AGENT_CONTRACT.md) — lane protocol, handoffs, conflict resolution
 
 ## Step 2: Know Your Lane
 
@@ -15,7 +17,7 @@ How to start working in Blackstack as a new or returning agent.
 | **Lane A** (Governance) | Claude (NEXUS) | Specs, policies, contracts, docs | `L3-governance/**`, root `*.md` |
 | **Lane Runtime** | Codex/GPT (FORGE) | Code, tests, CI, scripts | `lib/**`, `.github/**`, `tests/**` |
 
-Your lane determines which files you can write. Cross-agent contracts define exact boundaries.
+Your lane determines which files you can write. See `CROSS_AGENT_CONTRACT.md` Section 1 for exact boundaries.
 
 ## Step 3: Verify Environment
 
@@ -28,14 +30,17 @@ bash L6-operations/scripts/versions.sh
 
 # Check active lanes
 bash L6-operations/scripts/lane-worktree.sh list
+
+# Check pending approvals
+ls L6-operations/runs/pending-approvals/ 2>/dev/null
 ```
 
 ## Step 4: Pick Up a Handoff
 
 1. Check for handoff files: `ls L6-operations/runs/handoff-*.md`
 2. Read the most recent handoff for your lane
-3. Verify all listed deliverables exist
-4. Check for blocking issues
+3. Verify all listed deliverables exist: `ls -la <each file>`
+4. Check for blocking issues: `ls L6-operations/runs/issue-*.md`
 5. If all clear, begin your assigned work
 
 ## Step 5: Autonomy Rules
@@ -48,13 +53,15 @@ bash L6-operations/scripts/lane-worktree.sh list
 | A3 | PRs, new packages, HIGH risk | CEO approval required |
 | A4 | Push to main, secrets, billing | CEO executes |
 
-Check standing orders for pre-approved A3 delegations.
+Check standing orders (`L5-infrastructure/runtime/state/standing-orders.json`) for pre-approved A3 delegations.
 
 ## Step 6: When You're Done
 
-1. Write a handoff file with all deliverables and exact file paths
-2. Document any blockers or issues
-3. Do NOT leave orphaned lanes — close if you opened one
+1. Write handoff: `L6-operations/runs/handoff-<lane>-<YYYY-MM-DD>-s<N>.md`
+2. Use template: `L6-operations/templates/handoff-template.md`
+3. List all deliverables with exact file paths
+4. Document any blockers or issues
+5. Do NOT leave orphaned lanes — close if you opened one
 
 ## Rules to Remember
 
@@ -65,6 +72,13 @@ Check standing orders for pre-approved A3 delegations.
 - **PRSA protocol** for multi-approach decisions
 - **Max 4 round-trips** per task, then escalate
 
+## Getting Help
+
+- Operations manual: [L6-operations/OPERATIONS_MANUAL.md](L6-operations/OPERATIONS_MANUAL.md)
+- Infrastructure: [L5-infrastructure/INFRASTRUCTURE_ARCHITECTURE.md](L5-infrastructure/INFRASTRUCTURE_ARCHITECTURE.md)
+- GPT-5.4 specific: [L3-governance/specs/sops/gpt54-operations.sop.md](L3-governance/specs/sops/gpt54-operations.sop.md)
+- Escalation: Agent → PRSA quorum → CEO
+
 ---
 
-*Maintained by NEXUS, VP Operations*
+*— NEXUS, VP Operations*
