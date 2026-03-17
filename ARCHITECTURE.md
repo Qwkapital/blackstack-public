@@ -1,120 +1,75 @@
-# Blackstack Architecture
+<!-- BIG4-HEADER
+doc_id: GOV-ARCH-001
+version: 2.0
+last_audit: 2026-03-07
+status: ACTIVE
+owner: NEXUS
+classification: INTERNAL
+-->
 
-## System Overview
+# BlackStack Architecture
 
-Blackstack operates as a 5-plane autonomous system with 16 agents orchestrated through Bridge v3.9.
-
-```
-                        ┌─────────────────┐
-                        │   FRONT DOOR    │
-                        │ Open WebUI      │
-                        │ Telegram / CLI  │
-                        └────────┬────────┘
-                                 │
-                        ┌────────▼────────┐
-                        │  CONTROL PLANE  │
-                        │ NEXUS-Core      │
-                        │ Bridge v3.9     │
-                        │ DAG Engine      │
-                        │ Approval Queue  │
-                        └────────┬────────┘
-                                 │
-              ┌──────────────────┼──────────────────┐
-              │                  │                  │
-     ┌────────▼────────┐ ┌──────▼───────┐ ┌───────▼───────┐
-     │  WORKER PLANE   │ │  TOOL PLANE  │ │  STATE PLANE  │
-     │ FORGE (Codex)   │ │ 40 MCP svrs  │ │ Redis 6379    │
-     │ ATLAS (Gemini)  │ │ n8n 5678     │ │ Git (develop) │
-     │ ORACLE (Aider)  │ │ OpenFang     │ │ Filesystem    │
-     │ BOLT (Goose)    │ │ LiteLLM 4000 │ │ session.log   │
-     │ GHOST (Ollama)  │ │              │ │ audit trails  │
-     │ SENTINEL (fan)  │ │              │ │               │
-     └─────────────────┘ └──────────────┘ └───────────────┘
-```
-
-## Planes
-
-### Front Door
-User intake via Open WebUI on `model=nexus`, with Telegram as approval/mobile continuity and CLI as admin/worker interface. Requests are converted to structured intents with scope, risk, and constraints.
-
-### Control Plane
-NEXUS-Core decomposes goals, classifies tasks (type/scope/risk/autonomy), routes via decision tree, dispatches through Bridge, monitors execution, and verifies results. Bridge v3.9 provides runtime modules for routing, dispatch, quality scoring, DAG execution, approval queuing, and NEXUS Console visibility.
-
-### Worker Plane
-9 dispatcher agents + 4 direct + 1 special + 1 fan-out + 1 local. Each agent has a codename, provider, and capability profile defined in agent spec files.
-
-### Tool Plane
-40 MCP servers organized by department (core, data, services, platform, presentation, agents). n8n workflows for automation. OpenFang for model orchestration.
-
-### State Plane
-Redis for stigmergy (lane status, advisory locks, handoff signals). Git for versioned persistence. Filesystem for session logs, audit trails, and approval records.
-
-## Agent Topology
-
-| Codename | Provider | Role | Dispatch | Cost |
-| -------- | -------- | ---- | -------- | ---- |
-| NEXUS | Claude (Anthropic) | Architect, Orchestrator | Direct CLI | Premium |
-| FORGE | Codex (OpenAI) | Primary Builder | Bridge /dispatch | Premium |
-| ATLAS | Gemini (Google) | Researcher, Validator | Bridge /dispatch | Budget |
-| ORACLE | Aider | Refactorer | Bridge /dispatch | Variable |
-| BOLT | Goose (Block) | Executor, OS tasks | Bridge /dispatch | $0 |
-| GHOST | Ollama (local) | Triage, Quality scoring | Bridge /dispatch | $0 |
-| SENTINEL | Fan-out | Quorum Coordinator | Bridge /fan-out | N/A |
-| HEAVY | Jules (Google) | Async cloud Builder | Direct (async) | Premium |
-
-## Bridge v3.9 Module Map
-
-```
-bridge-relay.js (entry point :5679)
-├── lib/routing.js         — Decision tree, load-aware, provider-aware
-├── lib/dispatchers.js     — HTTP/CLI/Ollama dispatch adapters
-├── lib/dag.js             — Multi-node DAG execution, retry, pause/resume
-├── lib/approval-queue.js  — Async A3 queue, fs-backed, Telegram notify
-├── lib/quality-scorer.js  — Response quality scoring
-├── lib/profiler.js        — Agent performance profiling
-├── lib/stigmergy.js       — Redis advisory locks, lane state
-├── lib/standing-orders.js — SO evaluation engine (13 orders)
-├── lib/self-reflection.js — Agent self-assessment
-├── lib/lessons.js         — Experience feedback loop
-├── lib/traces.js          — Execution tracing
-├── lib/cache.js           — Redis exact-match caching
-├── lib/audit.js           — Dispatch audit logging
-├── lib/a2a-protocol.js    — Agent-to-agent protocol
-├── lib/synaptic-packet.js — Context packet builder
-├── lib/plan-document.js   — Plan artifact management
-├── lib/openai-compat.js   — OpenAI API compatibility layer
-├── lib/system-integration.js — MCP tool loading
-└── lib/nexus-control-plane.js — model=nexus routing
-```
-
-## Data Flow
-
-```
-User Request → Open WebUI (model=nexus) → Classify (type/scope/risk) → Autonomy Level (A0-A4)
-  → Route (decision tree) → Dispatch (Bridge → Agent) → Execute
-  → Verify (independent reviewer) → Document (audit trail) → Gate (if A3+: CEO approval) → Close
-```
-
-## Autonomy Model
-
-| Level | Scope | Gate | Example |
-| ----- | ----- | ---- | ------- |
-| A0 | Full-auto | None | File reads, research, routing LOW |
-| A1 | Auto-report | Log | Multi-file edits, MEDIUM routing |
-| A2 | Auto-notify | Notify CEO | Git commits, config changes |
-| A3 | Propose-approve | CEO approval | PRs, new packages, HIGH risk |
-| A4 | CEO-only | CEO executes | Push to main, secrets, billing |
-| S0-S2 | Agent-to-agent | Bridge logs/validates | Inter-agent delegation |
-
-13 standing orders (SO-001 to SO-013) pre-approve recurring A3 patterns, reviewed monthly.
-
-## Infrastructure
-
-- **Platform**: WSL2 Ubuntu 24.04, 32GB RAM, RTX 2060 6GB VRAM
-- **Docker**: n8n, Redis, Open WebUI, LiteLLM, Grafana, Loki (profiles: core/dev/observability)
-- **Ollama**: 8 local models (~14.5GB)
-- **CI/CD**: 3 GitHub Actions workflows (ci.yml, test-mcp-servers.yml, security-review.yml)
+**Document ID**: GOV-ARCH-001
+**Version**: 2.0
+**Effective Date**: 2026-02-17
+**Owner**: CEO (Juan David Cardona Mera)
+**Classification**: L3 INTERNAL
+**Review Cycle**: Quarterly
 
 ---
 
-*Maintained by NEXUS, VP Operations*
+## Purpose
+
+BlackStack is an auditable-by-design system. The filesystem is the single source of truth.
+All layers have bounded responsibilities; no layer bleeds into another.
+
+## 8-Layer Architecture
+
+| Layer | Directory | Role |
+|-------|-----------|------|
+| L1-principal | `L1-principal/` | JDCM personal — health, finance, education, relationships, immigration, goals, profile, knowledge/ |
+| L2-corporate | `L2-corporate/` | QWK LLC / QKT — entity, strategy, finance, resolutions, compliance, team, projects, custody, decisions |
+| L3-governance | `L3-governance/` | BlackStack tech-only — policies, specs, catalog, runbooks (zero JDCM dependency) |
+| L4-engineering | `L4-engineering/` | 39 MCP servers by dept (core, data, services, platform, presentation) |
+| L5-infrastructure | `L5-infrastructure/` | n8n, Dify, Docker runtime, Bridge Relay v3.8 |
+| L6-operations | `L6-operations/` | Scripts, hooks, audits, monitoring, secrets vault |
+| L7-marketing | `L7-marketing/` | Brand, landing pages, design system, web assets |
+| L8-research | `L8-research/` | R&D sandboxes, experiments, research/ |
+
+## Cascade & Segregation
+
+```
+JDCM (L1) → QKT Trust (L2) → QWK LLC (L2) → BlackStack (L3–L8) → NEXUS (transversal)
+```
+
+- **L1**: personal data only — never referenced by automated systems
+- **L2**: money, legal, strategy — no automation writes here without CEO approval
+- **L3**: tech governance, autonomous — zero dependency on L1 or L2 personal data
+- **L4–L8**: execution layers — governed by L3 policies
+
+## Invariants
+
+- Evidence never leaves `L6-operations/`
+- Normative documents live only in `L3-governance/`
+- `L5-infrastructure/` owns its CLAUDE.md for domain-specific instructions
+- Git repos live in product context or `L8-research/` sandboxes
+- No hardcoded paths — all scripts use `$BLACKSTACK_ROOT`
+- Secrets live in `L6-operations/secrets/vault.env` (permissions 600)
+
+## Cross-Layer Communication
+
+```text
+L3-governance/     --[policies/schemas]-------> L4, L5, L6 (enforcement)
+L6-operations/     --[audit reports]----------> L3-governance/ (evidence)
+L5-infrastructure/ --[Bridge localhost:5679]---> L6-operations/ (heartbeat, health)
+L5-infrastructure/ --[Docker port 5678]--------> external (n8n API)
+L4-engineering/    --[MCP tools]---------------> L5, L6, L7 (execution)
+```
+
+## Change History
+
+| Version | Date | Author | Change |
+|---------|------|--------|--------|
+| v1.0 | 2026-02-08 | NEXUS | Initial document |
+| v1.1 | 2026-02-15 | NEXUS | Added change history (Big 4 compliance) |
+| v2.0 | 2026-02-17 | NEXUS | Full rewrite — 8-layer architecture, removed obsolete refs (TOOLS_INVENTORY.tsv, obsidian.contract.md), added L2-corporate and L7-marketing |
