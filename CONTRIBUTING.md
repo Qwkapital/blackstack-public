@@ -16,7 +16,7 @@ Do not cross lanes. Each lane has exclusive write access to its files.
 3. Run relevant audit modules for affected layers
 4. Ensure pre-commit hooks pass (shellcheck, ruff, bandit, JSON validation)
 5. Submit PR using the PR template
-6. Write a handoff file documenting deliverables
+6. Write a handoff file to `L6-operations/runs/handoff-<lane>-<date>.md`
 
 ## Code Standards
 
@@ -35,4 +35,4 @@ Do not cross lanes. Each lane has exclusive write access to its files.
 
 ## Secrets
 
-Never commit secrets. All credentials stored in gitignored vault files with 600 permissions.
+Never commit secrets. All credentials in `L6-operations/secrets/vault.env` (gitignored, 600 perms).
