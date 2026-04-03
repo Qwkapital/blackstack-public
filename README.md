@@ -80,6 +80,7 @@ pytest tests/ -q && npx vitest run
 | Onboarding | [ONBOARDING.md](ONBOARDING.md) |
 | Coordination contract | [L3-governance/contracts/CROSS_AGENT_CONTRACT.md](L3-governance/contracts/CROSS_AGENT_CONTRACT.md) |
 | Autonomy framework | [L3-governance/policies/AUTONOMY_FRAMEWORK.md](L3-governance/policies/AUTONOMY_FRAMEWORK.md) |
+| Root governance | [ROOT_INTOCABLES.md](ROOT_INTOCABLES.md) |
 | Operations guide | [L6-operations/OPERATIONS_MANUAL.md](L6-operations/OPERATIONS_MANUAL.md) |
 | Infrastructure | [L5-infrastructure/INFRASTRUCTURE_ARCHITECTURE.md](L5-infrastructure/INFRASTRUCTURE_ARCHITECTURE.md) |
 
