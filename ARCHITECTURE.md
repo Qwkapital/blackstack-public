@@ -27,10 +27,10 @@ All layers have bounded responsibilities; no layer bleeds into another.
 
 | Layer | Directory | Role |
 |-------|-----------|------|
-| L1-principal | `L1-principal/` | JDCM personal — health, finance, education, relationships, immigration, goals, profile, knowledge/ |
+| L1-principal | `L1-principal/` | JDCM personal archive — health, finance, education, immigration, profile, and external knowledge mount |
 | L2-corporate | `L2-corporate/` | QWK LLC / QKT — entity, strategy, finance, resolutions, compliance, team, projects, custody, decisions |
 | L3-governance | `L3-governance/` | BlackStack tech-only — policies, specs, catalog, runbooks (zero JDCM dependency) |
-| L4-engineering | `L4-engineering/` | 39 MCP servers by dept (core, data, services, platform, presentation) |
+| L4-engineering | `L4-engineering/` | 44 MCP servers by dept (core, data, services, platform, presentation) |
 | L5-infrastructure | `L5-infrastructure/` | n8n, Dify, Docker runtime, Bridge Relay v3.8 |
 | L6-operations | `L6-operations/` | Scripts, hooks, audits, monitoring, secrets vault |
 | L7-marketing | `L7-marketing/` | Brand, landing pages, design system, web assets |
