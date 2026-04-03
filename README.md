@@ -25,7 +25,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for full system diagrams, planes, and dat
 | L3-governance | Tech governance | 93 policies, 41 specs, 15 audit modules, agent specs |
 | L4-engineering | Engineering | 40 MCP servers by department (core, data, services, platform) |
 | L5-infrastructure | Infrastructure | Bridge runtime (20 lib modules), Docker, n8n, LiteLLM, Redis |
-| L6-operations | Operations | 106 scripts, hooks, cron (33 entries), monitoring, secrets |
+| L6-operations | Operations | 106 scripts, hooks, cron (36 entries), monitoring, secrets |
 | L7-marketing | Marketing | Brand, web (public_html), i18n (6 languages) |
 | L8-research | R&D | Sandbox, experiments, 68 research outputs |
 
