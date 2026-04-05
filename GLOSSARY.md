@@ -27,7 +27,7 @@
 | **SENTINEL** | Fan-out coordinator for HIGH risk quorum decisions |
 | **HEAVY** | Async cloud builder (currently Jules) |
 | **PRSA** | Propose-Review-Score-Assign — multi-approach decision protocol |
-| **Swarm** | The collective of 16 agents orchestrated by NEXUS through Bridge |
+| **Swarm** | The collective of 4 active agents orchestrated by NEXUS through Bridge |
 
 ## Infrastructure
 
