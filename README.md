@@ -1,6 +1,6 @@
 # Blackstack
 
-Autonomous technology platform serving QWK LLC and the Quantum Wealth Kapital ecosystem. Orchestrates a multi-agent swarm (16 agents, 44 MCP servers, 220+ tools) through a modular Bridge relay with deterministic routing, quality scoring, and human-in-the-loop risk gates. Certification readiness: 9.5/10 (SOC 2 ~99%, ISO 27001 ~97%, NIST CSF ~95%, COBIT ~93%).
+Autonomous technology platform serving QWK LLC and the Quantum Wealth Kapital ecosystem. Orchestrates a multi-agent swarm (4 active agents, 44 MCP servers, 220+ tools) through a modular Bridge relay with deterministic routing, quality scoring, and human-in-the-loop risk gates. Certification readiness: 9.5/10 (SOC 2 ~99%, ISO 27001 ~97%, NIST CSF ~95%, COBIT ~93%).
 
 **Repository**: `Qwkapital/blackstack` (private) | **Branch model**: `main` (single branch)
 
