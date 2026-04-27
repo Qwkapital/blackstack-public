@@ -1,128 +1,82 @@
-# BlackStack Platform — Agent Orchestration
+# BlackStack — Agent Architecture
 
-This document describes the autonomous agent swarm architecture, coordination model, and dispatch mechanisms used in BlackStack.
-
----
-
-## Agent Taxonomy
-
-BlackStack operates a **16-agent swarm** organized into three functional tiers:
-
-### Dispatcher Agents (9)
-
-Domain-specific routing agents that classify incoming tasks and delegate to the appropriate specialized agent or MCP server.
-
-| Agent | Domain | Responsibility |
-|-------|--------|----------------|
-| Compliance Dispatcher | Regulatory | Routes compliance checks, policy validation, standards mapping |
-| Code Review Dispatcher | Engineering | Routes code analysis, PR reviews, quality assessments |
-| Security Dispatcher | Security | Routes vulnerability scans, secret detection, penetration analysis |
-| Ledger Dispatcher | Financial | Routes accounting operations, transaction validation, reconciliation |
-| Infrastructure Dispatcher | DevOps | Routes health checks, deployment operations, container management |
-| Data Dispatcher | Analytics | Routes data pipeline operations, ETL processes, query optimization |
-| Documentation Dispatcher | Knowledge | Routes documentation generation, cross-reference validation |
-| Communication Dispatcher | External | Routes notifications, reports, stakeholder updates |
-| Research Dispatcher | R&D | Routes experimental tasks, benchmarking, model evaluation |
-
-### Specialized Agents (4)
-
-Focused-capability agents that execute specific task categories:
-
-| Agent | Capability | Tools |
-|-------|-----------|-------|
-| SWE Agent | Software engineering tasks | Code generation, refactoring, testing |
-| PR Agent | Pull request analysis | Diff review, impact assessment, merge readiness |
-| Vulnerability Agent | Security assessment | CVE scanning, dependency audit, attack surface analysis |
-| Secret Agent | Credential management | Vault operations, key rotation, access control |
-
-### Financial Agents (3)
-
-Quantitative and regulatory agents for financial operations:
-
-| Agent | Focus | Output |
-|-------|-------|--------|
-| Quant Agent | Quantitative analysis | Risk metrics, portfolio modeling, statistical analysis |
-| Risk Agent | Portfolio risk | VaR calculations, stress testing, exposure reports |
-| Regulatory Agent | Compliance reporting | Regulatory filings, audit preparation, standards mapping |
-
-## Coordination Model — Redis Stigmergy
-
-Agents coordinate via **stigmergy**, a decentralized pattern inspired by biological systems where agents communicate through environmental state rather than direct messaging.
-
-```
-┌──────────┐    write    ┌─────────────┐    read     ┌──────────┐
-│  Agent A │────marker──▶│    Redis     │◀──marker────│  Agent B │
-│          │             │  (port 6379) │             │          │
-│          │◀──read──────│  Stigmergy   │──────read──▶│          │
-│          │   markers   │    Layer     │   markers   │          │
-└──────────┘             └─────────────┘             └──────────┘
-```
-
-### How It Works
-
-1. **Task markers** — When an agent begins work, it writes a marker to Redis indicating task ownership, status, and metadata
-2. **Completion signals** — Upon finishing, the agent updates the marker with results and quality scores
-3. **Emergent allocation** — Available agents poll for unowned markers matching their capabilities
-4. **Conflict resolution** — Atomic Redis operations prevent duplicate task assignment
-5. **State decay** — Stale markers expire via TTL, preventing deadlocks from failed agents
-
-### Benefits Over Direct Messaging
-
-- **No single point of failure** — agents operate independently
-- **Elastic scaling** — add/remove agents without reconfiguration
-- **Fault tolerance** — failed agents' tasks are automatically reassigned
-- **Observability** — all coordination state is inspectable in Redis
-
-## Bridge Relay v3.7
-
-The Bridge Relay serves as the authenticated dispatch layer between clients and the agent swarm.
-
-### Authentication Flow
-
-```
-Client → Bearer Token → Bridge Relay → Token Validation → Agent Dispatch
-                              │
-                         Ed25519 Sign
-                         TaskPacket
-                              │
-                         Fan-out to
-                         target agents
-```
-
-### Task Packet Structure
-
-Every agent operation is wrapped in a signed TaskPacket:
-
-```json
-{
-  "task_id": "uuid-v4",
-  "role": "dispatcher|specialized|financial",
-  "agent": "agent-identifier",
-  "payload": { },
-  "timestamp": "ISO-8601",
-  "signature": "Ed25519-base64"
-}
-```
-
-### Quality Scoring
-
-Agent outputs pass through a quality scoring pipeline before propagation:
-
-1. **Schema validation** — output matches expected structure
-2. **Completeness check** — all required fields are present
-3. **Confidence threshold** — agent-reported confidence meets minimum
-4. **Cross-reference** — entity references validated against registry
-5. **Propagation decision** — score determines accept/review/reject
-
-### A2A Protocol
-
-The Agent-to-Agent (A2A) protocol enables inter-agent delegation:
-
-- Agents can delegate subtasks to other agents through the Bridge Relay
-- All delegations are subject to 3-level subagent verification
-- Delegation chains are tracked for audit purposes
-- Maximum delegation depth is configurable (default: 3 levels)
+BlackStack operates a **6-agent swarm** organized into two tiers: control and worker.
+13 legacy codenames (atlas, bolt, forge, oracle, etc.) are archived — canonical worker
+model active since Bridge v3.9 (2026-04-08).
 
 ---
 
-*Quantum Wealth Kapital — Autonomous AI Agent Orchestration*
+## Control Tier
+
+| Agent | Role | Governance |
+|-------|------|------------|
+| NEXUS | Control plane — routes every task via ROUTING_POLICY decision tree | Risk classification → dispatch → quality scoring → HITL gate |
+| SENTINEL | Cross-validation, fan-out, council orchestration for HIGH risk | 3 independent opinions minimum; human required if spread > 0.3 |
+
+**NEXUS flow**: Open WebUI / CLI → NEXUS classifies (risk, type, domain) → Bridge v3.9 routes
+to worker → quality-scores output → applies HITL gate if HIGH risk.
+
+---
+
+## Worker Tier
+
+| Agent | Specialization | Model | Thompson Wins |
+|-------|---------------|-------|----------------|
+| Claude | Primary builder, reviewer, architect | claude-sonnet-4-6 (standard) / claude-opus-4-7 (HIGH) | Primary lane |
+| Codex | Failover builder, structured output | OpenAI Codex CLI | 10 (building baseline) |
+| Gemini | Researcher, SAGE judge, council tiebreaker | Gemini 2.5 Pro / Flash (free tier) | Researcher lane |
+| Ghost | Local inference, privacy gate, quality gate | Ollama qwen3:4b (RTX 2060, 6GB VRAM) | 31 (local baseline) |
+
+**Thompson Sampling routing**: dynamic agent selection based on historical win rates per task type.
+Each task outcome updates the multi-armed bandit — optimal agent floats to top over time.
+
+---
+
+## Routing Protocol
+
+```
+Task → NEXUS classify(risk, type, domain)
+  → STANDARD: route to primary worker by type
+  → HIGH:     SENTINEL fan-out → 3 workers → vote/consensus → quality-score → HITL
+  → CRITICAL: council + human approval required
+```
+
+**Task type → primary agent**:
+- build / fix / review → Claude (Sonnet 4.6)
+- architecture / plan → Claude (Opus 4.7)
+- research / quantitative → Gemini
+- failover / structured output → Codex
+- local / privacy → Ghost
+- HIGH risk → Council (Claude + Codex + Gemini) via SENTINEL
+
+---
+
+## Council Protocol
+
+Activated by SENTINEL for HIGH risk decisions:
+
+- **Code / reasoning tasks**: voting (ACL 2025: +13.1% accuracy)
+- **Knowledge / factual tasks**: consensus (ACL 2025: +4.9% accuracy)
+- **Spread > 0.3**: escalate to human review
+- **Max 1 deliberation round** per task
+
+---
+
+## Anti-Loop Controls
+
+- Max 8 impulse budget per task (NEURAL_PROTOCOL)
+- Same agent 3× on same task = HARD STOP
+- A dispatches to B, B dispatches back to A = STOP (ping-pong)
+- Timeouts: Ghost 60s · Codex 120s · Gemini 180s · Claude 120s
+
+---
+
+## Key Governance Files
+
+| File | Purpose |
+|------|---------|
+| `ROUTING_POLICY.md` | Full decision tree with risk gates and fallback chains |
+| `AUTONOMY_FRAMEWORK.md` | What agents can self-authorize vs. must escalate |
+| `SWARM_DIRECTIVE.md` | Operational mandates for all agents |
+| `NEURAL_PROTOCOL.md` | Anti-loop, anti-ambiguity, anti-malpractice controls |
+| `COORDINATION_MODEL.md` | Agent coordination patterns and closeout behavior |
