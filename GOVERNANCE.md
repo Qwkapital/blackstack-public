@@ -1,123 +1,89 @@
-# BlackStack Platform — AI Governance Framework
+# BlackStack — AI Governance Framework
 
-BlackStack enforces institutional-grade governance across all autonomous AI operations. The framework maps to established standards and implements continuous enforcement through automated guards, runtime hooks, and audit cycles.
+BlackStack enforces institutional-grade governance across all autonomous AI operations. The framework
+maps to established standards and implements continuous enforcement through automated guards, runtime
+hooks, audit cycles, and a 4-tier risk classification system.
 
 ---
 
 ## Standards Alignment
 
-| Framework | Coverage | Application |
-|-----------|----------|-------------|
-| **NIST AI RMF** | Map, Measure, Manage, Govern | Risk taxonomy, bias monitoring, transparency reporting |
-| **ISO 42001** | AI Management System | Lifecycle controls, documentation, continual improvement |
-| **SOC 2 Type I** | Security, Availability | Access controls, audit trails, change management |
-| **COBIT 2019** | IT Governance | Decision rights, accountability chains, performance metrics |
-
-## 14-Module Audit Framework
-
-Every platform change is evaluated by a continuous audit suite. Each module produces a scored report with OK/WARN/FAIL verdicts.
-
-| # | Module | Scope |
-|---|--------|-------|
-| 1 | Documental | Document integrity, completeness, and versioning |
-| 2 | Links | Internal and external reference validation |
-| 3 | Inventory | Asset tracking, drift detection, file census |
-| 4 | Models | AI model registry coherence and version control |
-| 5 | Coherence | Cross-layer consistency (L1-L8) |
-| 6 | Big4 | Enterprise audit methodology alignment |
-| 7 | Operational | Runtime health, SLA compliance, uptime |
-| 8 | Cross-refs | Inter-document reference integrity |
-| 9 | Currency | Temporal validity of all artifacts |
-| 10 | Code Quality | Static analysis via ruff, bandit, shellcheck |
-| 11 | Agent Specs | Agent configuration schema validation |
-| 12 | Config Coherence | Infrastructure configuration consistency |
-| 13 | Shell Quality | Script safety, portability, error handling |
-| 14 | Entity Cross-ref | Entity registry validation (197 bindings) |
-
-### Certification Scoring
-
-```
-Score = (OK / (OK + WARN + FAIL)) x 100
-
-A+  >= 99%    |  A  >= 95%    |  B  >= 90%
-C   >= 80%    |  D  >= 70%    |  F  <  70%
-```
-
-Certification status: **APTO CON OBSERVACIONES** requires all FAIL = 0 across all 14 modules.
-
-## Enforcement Layers
-
-### Layer 1 — Pre-Commit Guards (10)
-
-Static enforcement that blocks non-compliant code before it enters the repository.
-
-| Guard | Function |
-|-------|----------|
-| G1 | Secret detection — blocks API keys, tokens, credentials |
-| G2 | ShellCheck — static analysis on all shell scripts |
-| G3 | Ruff — Python linting and formatting enforcement |
-| G4 | Bandit — Python security vulnerability scanning |
-| G5 | yamllint — YAML syntax and style validation |
-| G6 | JSON — structural validation of all JSON artifacts |
-| G7 | Large file — prevents binary/oversized commits |
-| G8 | Agent spec — validates agent configuration schemas |
-| G9 | Prompt integrity — SHA-256 verification on AI prompts |
-| G10 | Structured data — ensures field-level consistency |
-
-### Layer 2 — Runtime Hooks (PostToolUse)
-
-Dynamic enforcement during agent execution.
-
-1. **Action logging** — immutable audit trail for every tool invocation
-2. **Subagent verification** — 3-level validation (rule, policy, hook) before delegation
-3. **Structured output validation** — schema enforcement on AI-generated data
-4. **Entity cross-reference** — prevents data transposition across entity boundaries
-
-### Layer 3 — Automated Operations
-
-- **29 crontab entries** — weekly audit cycles, daily smoke tests, health checks, log rotation
-- **Maturity gates** — 8/8 implemented, enforcing progressive quality standards
-- **Post-commit hooks** — automatic audit-trail logging on every commit
-
-## Anti-Hallucination Protocol
-
-AI agents operating within BlackStack are subject to strict factual controls:
-
-- **Entity registry** — 197 verified bindings prevent AI-generated entity transposition
-- **SHA-256 prompt integrity** — detects unauthorized modification of agent prompts
-- **Quality scoring** — Bridge Relay scores agent outputs before propagation
-- **Risk gates** — high-impact actions are blocked pending human review
-- **3-level subagent verification** — rule check, policy check, and hook enforcement before any agent delegation
-
-## Decision Governance
-
-Architectural and operational decisions are tracked through a formal decision registry:
-
-- **Format**: DEC-NNN with status (ACTIVE, SUPERSEDED, REVOKED)
-- **Current registry**: DEC-001 through DEC-015
-- **Scope**: Technology selection, billing controls, marketing strategy, security hardening, agent orchestration patterns
-- **Audit trail**: Every decision includes rationale, date, and impact assessment
-
-## Risk Management
-
-### Risk Gates
-
-The Bridge Relay implements configurable risk gates that classify agent actions by impact level:
-
-| Level | Action | Gate |
-|-------|--------|------|
-| Low | Read operations, queries | Auto-approve |
-| Medium | Write operations, API calls | Quality score threshold |
-| High | Financial operations, deployments | Human review required |
-| Critical | Infrastructure changes, security operations | Multi-factor approval |
-
-### Incident Response
-
-- Pre-commit guards provide first-line defense against code-level incidents
-- Runtime hooks capture anomalous agent behavior in real-time
-- Crontab health checks detect infrastructure degradation
-- Audit suite identifies policy drift across weekly cycles
+| Standard | Coverage | BlackStack Implementation |
+|----------|----------|--------------------------|
+| NIST AI RMF 1.0 | GOVERN / MAP / MEASURE / MANAGE | Risk tiers, routing policy, Thompson Sampling metrics, hook guards |
+| ISO/IEC 42001:2023 | AI Management System (7 clauses) | L3-governance/ policies, SWARM_DIRECTIVE, audit lifecycle |
+| NIST CSF 2.0 | 5 functions | Structurally aligned via COBIT 2019 mapping |
+| COBIT 2019 | IT Governance | Decision rights, accountability chains, DEC-xxx format |
+| SOC 2 Type I | Security + Availability | Scoped tokens, Ed25519 audit trail, change management |
+| OWASP Agentic Top 10 | 10 threats | 7/10 mitigated — see SECURITY.md |
+| Google A2A v0.2 | Agent interoperability | Phase 2 adopted (bridge endpoints aligned); Phase 3 pending |
 
 ---
 
-*Quantum Wealth Kapital — Governed AI for Financial Infrastructure*
+## 26-Module Audit Framework
+
+Continuous audit suite producing scored OK/WARN/FAIL reports. Orchestrated by AEGIS across 5 domains.
+
+### AEGIS Domains (5)
+
+| Domain | Script | Modules Orchestrated |
+|--------|--------|---------------------|
+| Integrity | aegis-integrity.sh | entity-xref, entity-xref-v2, agent-specs, config-coherence, conciliate |
+| Compliance | aegis-compliance.sh | coherencia, big4, mcp-compliance |
+| Observability | aegis-observability.sh | operational, mcp-health, currency |
+| Evidence | aegis-evidence.sh | score, delta, readiness-bundle, audit-trail |
+| Dispatch | aegis-dispatch.sh | documental, modelos, cross-refs, enlaces, inventario, tax, shell-quality, quality-integration, remediate |
+
+### Scoring Formula
+
+```
+Score = (OK / (OK + WARN + FAIL)) × 100
+Current state: 119 PASS / 0 FAIL — L3 95% · L4 65% (largest gap) · L6 100%
+```
+
+---
+
+## Policy Framework
+
+103 policies in `L3-governance/policies/`. Core governance documents:
+
+| Policy | Purpose |
+|--------|---------|
+| SWARM_DIRECTIVE | Operational mandates for all agents and the control plane |
+| ROUTING_POLICY | Deterministic task routing decision tree with risk gates |
+| AUTONOMY_FRAMEWORK | What agents can self-authorize vs. must escalate |
+| ANTI_HALLUCINATION_POLICY | Data provenance, canonical source rules, 197-binding guard |
+| NEURAL_PROTOCOL | Anti-loop (8 impulse budget), anti-ambiguity, anti-malpractice |
+| RESEARCH_PERSISTENCE_POLICY | Write-First rule — all research must persist before returning |
+| DATA_CONCILIATION_POLICY | Cross-layer canonical source drift detection (weekly cron) |
+| AUTO_ORCHESTRATION | Conditions under which NEXUS may self-trigger agent chains |
+| ACCESS_CONTROL_MATRIX | Per-agent, per-endpoint authorization matrix |
+| COMPLIANCE_MATRIX | Standards → control → audit module mapping |
+
+---
+
+## Governance Enforcement Chain
+
+```
+Pre-commit (10 guards) → staged file validation
+  ↓
+PreToolUse hook (G1-G10) → live operation gating
+  ↓
+Bridge dispatch → ROUTING_POLICY risk classification
+  ↓
+Quality scorer → per-task output evaluation
+  ↓
+PostToolUse hooks (4) → post-execution validation
+  ↓
+Weekly audit cron (36 entries) → drift detection + remediation
+```
+
+---
+
+## Risk Tier Model
+
+| Tier | Threshold | Routing |
+|------|-----------|---------|
+| STANDARD | Default | Primary worker via ROUTING_POLICY |
+| HIGH | Sensitive data, L1/L2 writes, external comms | SENTINEL fan-out → 3 workers → council → quality gate |
+| CRITICAL | Infrastructure changes, push to git | SENTINEL + human approval (Telegram HITL) required |
