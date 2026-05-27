@@ -16,6 +16,20 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for full system diagrams, planes, and dat
 | Tool | Capabilities | 45 MCP servers, 192+ tools, 7 original n8n automation skills |
 | State | Persistence | Redis (stigmergy), Qdrant (5 collections, BGE-M3 embeddings), Git |
 
+## Policy Context
+
+BlackStack v3.0 addresses the governance gap created when existing U.S. federal AI risk frameworks were applied to multi-agent autonomous systems deployed in regulated financial institutions.
+
+| Framework | Issued | Relevance |
+|-----------|--------|-----------|
+| SR 11-7 | April 2011 | Model risk management -- predates autonomous AI by 15 years |
+| OCC Bulletin 2026-13 | 2026 | AI risk in federal banking -- establishes requirement, omits agentic implementation guidance |
+| SR 26-2 | 2026 | AI model risk (Fed/OCC/FDIC joint) -- extends SR 11-7, does not address multi-agent orchestration |
+| Treasury Report | December 2024 | Documents human capital gap in AI governance across FDIC-insured institutions |
+| FSOC 2025 | 2025 | Flags AI governance as emerging systemic financial risk |
+
+This gap affects all 4,336 FDIC-insured institutions. BlackStack v3.0 documents a practitioner implementation methodology, published in SSRN Abstract 6791198.
+
 ## Layer Structure
 
 | Layer | Purpose | Key Contents |
@@ -35,10 +49,10 @@ See [AGENTS.md](AGENTS.md) for full capabilities, routing, and governance model.
 
 | Agent | Role | Model |
 |-------|------|-------|
-| NEXUS | Control plane — routing, orchestration, policy enforcement | Orchestrator |
+| NEXUS | Control plane -- routing, orchestration, policy enforcement | Orchestrator |
 | SENTINEL | Cross-validation, fan-out, council for HIGH risk decisions | Verifier |
 | Claude | Primary builder, reviewer, architect | claude-sonnet-4-6 / claude-opus-4-7 |
-| Codex | Failover builder — Thompson Sampling dynamic routing | OpenAI Codex CLI |
+| Codex | Failover builder -- Thompson Sampling dynamic routing | OpenAI Codex CLI |
 | Gemini | Researcher, SAGE judge, council tiebreaker | Gemini 2.5 Pro / Flash |
 | Ghost | Local inference, privacy gate | Ollama qwen3:4b (RTX 2060) |
 
@@ -48,7 +62,7 @@ See [SECURITY.md](SECURITY.md) and [GOVERNANCE.md](GOVERNANCE.md).
 
 - **53 mechanical controls** active: 10 hook guards (PreToolUse/PostToolUse) + 10-guard pre-commit
 - **26 audit modules** across 5 AEGIS domains (integrity, compliance, observability, evidence, dispatch)
-- **Ed25519 audit signing** — tamper-evident session log chain
+- **Ed25519 audit signing** -- tamper-evident session log chain
 - **OWASP Agentic Top 10 (2025)**: 7/10 mitigated; 3 open (AA1 injection, AA7 SSRF, AA9 sandboxing)
 - **Standards**: NIST AI RMF 1.0 (73%), ISO/IEC 42001:2023 (71%), NIST CSF 2.0, COBIT 2019, SOC 2 Type I
 - **Google A2A Protocol v0.2** Phase 2 adopted (Phase 3 AgentCard endpoint pending)
@@ -79,7 +93,17 @@ audit, document generation, compliance, infrastructure management, and more).
 | v3.0 | May 2026 | 14 | Production deployment; SOC 2 / ISO 27001 / NIST CSF / COBIT 2019 validated |
 | v3.9 | Current | 26 | Expanded coverage across all 8 architectural layers |
 
-Production-deployed modules are anchored at v3.0 (14 modules). Active development continues at v3.9 (26 modules).
+Production-deployed modules are anchored at v3.0 (14 modules). Active development continues at v3.9 (26 modules). See [CHANGELOG.md](CHANGELOG.md) for full version history and milestone timeline.
+
+## Research
+
+### AI Governance for FDIC-Insured Institutions: A Practitioner's Framework
+
+Published May 2026 -- SSRN Financial Economics Network -- [Abstract 6791198](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6791198)
+
+Documents the governance gap in U.S. federal AI risk frameworks for regulated financial institutions and presents a practitioner methodology validated in production. BlackStack v3.0 (14 modules, ISO 27001/SOC 2/NIST CSF/COBIT) is the reference implementation.
+
+See [RESEARCH.md](RESEARCH.md) for full details, regulatory alignment table, and forthcoming work.
 
 ## Development Model
 
