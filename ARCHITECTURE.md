@@ -43,7 +43,7 @@ NEXUS-Core decomposes goals, classifies tasks (type/scope/risk/autonomy), routes
 4 worker agents (Claude, Codex, Gemini, Ghost) + 2 control agents (NEXUS, SENTINEL). Each worker has a defined capability profile, cost tier, and Thompson Sampling win record.
 
 ### Tool Plane
-45 MCP servers organized by department (core, data, services, platform, presentation). n8n v2.14.2 for workflow automation. 30 Claude Code skills for structured task execution.
+45 MCP servers organized by department (core, data, services, platform, presentation). n8n v2.21.5 for workflow automation. 30 Claude Code skills for structured task execution.
 
 ### State Plane
 Qdrant for episodic memory (BGE-M3 embeddings, 5 collections). Redis for advisory locks and lane signals. Git for versioned persistence. Filesystem for session logs, audit trails, and approval records.
@@ -117,7 +117,7 @@ User → Open WebUI (model=nexus) → Classify (type/scope/risk) → Autonomy Le
 
 - **Platform**: WSL2 Ubuntu 24.04, 32GB RAM, RTX 2060 6GB VRAM
 - **Docker**: n8n, Redis, Qdrant, Open WebUI (profiles: core/dev/observability)
-- **Ollama**: local inference — qwen3:4b, qwen2.5-coder:3b, phi4-mini, BGE-M3 embeddings
+- **Ollama**: local inference — qwen3:4b, qwen2.5-coder:7b, phi4-mini, BGE-M3 embeddings
 - **CI/CD**: 3 GitHub Actions workflows (ci, test-mcp-servers, security-review)
 - **Hosting**: quantumwealthkapital.com on Namecheap (VPS migration pending DEC-001)
 
