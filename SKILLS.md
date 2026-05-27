@@ -53,15 +53,15 @@
 | version-check | versions.sh + compare against version-manifest.json |
 | rollback | DEC-009 rollback gate for a target service |
 
-## Finance & Immigration (5)
+## Finance & Regulatory (5)
 
 | Skill | Purpose |
 |-------|---------|
 | ledger | Query L2-corporate/finance/ ledgers via finance-db MCP |
-| eb2-status | EB-2 NIW filing readiness score + Visa Bulletin check |
+| regulatory-status | Filing readiness score + regulatory compliance benchmark |
 | entity-check | Validate entity data against entity-registry.json |
 | tax | audit-tax.sh compliance verification |
 | conciliate | conciliate-canonical.sh cross-layer data drift check |
 
 ---
-*30 skills total · Updated: 2026-04-27*
+*30 skills total · Updated: 2026-05-27*
