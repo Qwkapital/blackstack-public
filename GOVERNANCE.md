@@ -38,7 +38,6 @@ Continuous audit suite producing scored OK/WARN/FAIL reports. Orchestrated by AE
 
 ```
 Score = (OK / (OK + WARN + FAIL)) × 100
-Current state: 119 PASS / 0 FAIL — L3 95% · L4 65% (largest gap) · L6 100%
 ```
 
 ---
