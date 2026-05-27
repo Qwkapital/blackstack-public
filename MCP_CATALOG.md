@@ -21,7 +21,7 @@ use `@modelcontextprotocol/sdk`. Transport: stdio (no HTTP transport unless stat
 | mcp-storage-unified | 5 | Unified filesystem + blob storage operations |
 | knowledge-graph | 9 | Knowledge graph queries over domain entities |
 
-## services (11 active)
+## services (12 active)
 
 | Server | Tools | Purpose |
 |--------|-------|---------|
@@ -64,7 +64,7 @@ use `@modelcontextprotocol/sdk`. Transport: stdio (no HTTP transport unless stat
 | memory | @modelcontextprotocol/server-memory | Shared working memory across sessions |
 | redis | @modelcontextprotocol/server-redis | Redis operations, key-value state |
 | tavily | tavily-mcp | Web search with structured results |
-| n8n-mcp | n8n-mcp@2.47.7 | n8n workflow execution via MCP |
+| n8n-mcp | n8n-mcp@2.56.0 | n8n workflow execution via MCP |
 | context7 | @upstash/context7-mcp | Library documentation retrieval |
 | sequential-thinking | @modelcontextprotocol/server-sequential-thinking | Multi-step reasoning |
 | obsidian | obsidian-mcp | Obsidian vault read/write |
@@ -73,4 +73,4 @@ use `@modelcontextprotocol/sdk`. Transport: stdio (no HTTP transport unless stat
 | gsheets | (custom) | Google Sheets read/write |
 
 ---
-*39 active · 3 inactive · 1 audit · 1 disabled · Last updated: 2026-04-27*
+*39 servers documented · 45 total including research & specialist stack · Last updated: 2026-05-27*
