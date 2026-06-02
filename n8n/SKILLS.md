@@ -16,14 +16,15 @@ Routes an arbitrary task through Bridge v3.9 with full governance:
 Cron: daily 06:00. Dispatches to Bridge with `type=research` → Gemini agent →
 writes findings to `L8-research/outputs/sweeps/`. Keeps INTELLIGENCE_DIGEST current.
 
-## eb2-niw-monitor
+## periodic-monitor
 
-Cron: weekly Monday 09:00.
-1. Fetch Visa Bulletin (HTTP GET, State Dept endpoint)
-2. Parse EB-2 ROW priority date cutoff
-3. Compare to filing readiness score (WES/15 + Letters/30 + Attorney/15 + I-140/10 + Plan/10 + Exhibits/20)
-4. If cutoff advanced or score changed: send email alert via gmail-personal MCP
+Cron: weekly. Monitors a public regulatory or data endpoint for threshold changes.
+1. Fetch target URL (HTTP GET, configurable endpoint)
+2. Parse the relevant threshold or value from the response
+3. Compare to stored baseline (Redis key or file)
+4. If value changed: send email notification via gmail MCP
 
+Configurable: endpoint URL, field selector, comparison logic, notification recipients.
 ## data-pipeline
 
 Triggered via `mcp-data-pipeline` MCP tool. Orchestrates:

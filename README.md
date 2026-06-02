@@ -23,7 +23,7 @@ BlackStack v3.0 addresses the governance gap created when existing U.S. federal 
 | Framework | Issued | Relevance |
 |-----------|--------|-----------|
 | SR 11-7 | April 2011 | Model risk management -- predates autonomous AI by 15 years |
-| OCC Bulletin 2026-13 | 2026 | AI risk in federal banking -- establishes requirement, omits agentic implementation guidance |
+| OCC Bulletin 2026-13 | 2026 | AI risk in federal banking -- documents the governance gap (non-binding guidance, omits agentic implementation) |
 | SR 26-2 | 2026 | AI model risk (Fed/OCC/FDIC joint) -- extends SR 11-7, does not address multi-agent orchestration |
 | Treasury Report | December 2024 | Documents human capital gap in AI governance across FDIC-insured institutions |
 | FSOC 2025 | 2025 | Flags AI governance as emerging systemic financial risk |
@@ -34,7 +34,7 @@ This gap affects all 4,336 FDIC-insured institutions. BlackStack v3.0 documents 
 
 | Layer | Purpose | Key Contents |
 |-------|---------|--------------|
-| L1-principal | Principal layer | Personal domains: health, education, finance |
+| L1-principal | Principal layer | Personal workspace (private) |
 | L2-corporate | Corporate (QWK/QKT) | Entity, strategy, compliance, decisions (DEC-001-021) |
 | L3-governance | Tech governance | 103 policies, 6 agent specs, 26 audit modules |
 | L4-engineering | Engineering | 45 MCP servers by department (core, data, services, platform, presentation) |
