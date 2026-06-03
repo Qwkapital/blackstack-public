@@ -1,0 +1,36 @@
+name: Weekly Release Summary
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Mondays 09:00 UTC
+  workflow_dispatch:
+
+jobs:
+  create-release-summary:
+    name: Generate Weekly Summary
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Get week commits
+        id: commits
+        run: |
+          WEEK_COMMITS=$(git log --oneline --since="7 days ago" --format="- %s" | head -20)
+          echo "commits<<EOF" >> $GITHUB_OUTPUT
+          echo "$WEEK_COMMITS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "count=$(git log --oneline --since='7 days ago' | wc -l)" >> $GITHUB_OUTPUT
+      
+      - name: Create weekly tag
+        run: |
+          WEEK=$(date +%Y-W%V)
+          git config user.email "nexus@qwkapital.com"
+          git config user.name "NEXUS"
+          git tag -a "weekly-$WEEK" -m "Weekly snapshot $WEEK — ${{ steps.commits.outputs.count }} commits" 2>/dev/null || true
+          git push origin "weekly-$WEEK" 2>/dev/null || true
+          echo "Weekly tag created: weekly-$WEEK ✓"

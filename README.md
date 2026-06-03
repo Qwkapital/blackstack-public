@@ -1,5 +1,14 @@
 # BlackStack
 
+[![CI](https://github.com/Qwkapital/blackstack-public/actions/workflows/ci.yml/badge.svg)](https://github.com/Qwkapital/blackstack-public/actions/workflows/ci.yml)
+[![Agents](https://img.shields.io/badge/AI%20Agents-6-purple?style=flat-square)](#agent-roster)
+[![MCP Servers](https://img.shields.io/badge/MCP%20Servers-45-blue?style=flat-square)](#layer-4-engineering)
+[![Controls](https://img.shields.io/badge/Controls-233-green?style=flat-square)](#)
+[![SSRN](https://img.shields.io/badge/SSRN-6791198-orange?style=flat-square)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6791198)
+[![Website](https://img.shields.io/badge/Website-quantumwealthkapital.com-gold?style=flat-square)](https://quantumwealthkapital.com)
+
+
+
 Autonomous technology platform serving QWK LLC and the Quantum Wealth Kapital ecosystem. Orchestrates a multi-agent swarm across 6 specialized agents (4 worker lanes + 2 control), 45 MCP servers (192+ tools), and a modular Bridge relay with deterministic routing, quality scoring, and human-in-the-loop risk gates.
 
 **Repository**: `Qwkapital/blackstack` (private) | **Branch**: `main`
