@@ -1,15 +1,15 @@
 # BlackStack
 
 [![CI](https://github.com/Qwkapital/blackstack-public/actions/workflows/ci.yml/badge.svg)](https://github.com/Qwkapital/blackstack-public/actions/workflows/ci.yml)
-[![Agents](https://img.shields.io/badge/AI%20Agents-6-purple?style=flat-square)](#agent-roster)
-[![MCP Servers](https://img.shields.io/badge/MCP%20Servers-45-blue?style=flat-square)](#layer-4-engineering)
+[![Agents](https://img.shields.io/badge/AI%20Agents-22-purple?style=flat-square)](#agent-roster)
+[![MCP Servers](https://img.shields.io/badge/MCP%20Servers-55-blue?style=flat-square)](#layer-4-engineering)
 [![Controls](https://img.shields.io/badge/Controls-233-green?style=flat-square)](#)
 [![SSRN](https://img.shields.io/badge/SSRN-6791198-orange?style=flat-square)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6791198)
 [![Website](https://img.shields.io/badge/Website-quantumwealthkapital.com-gold?style=flat-square)](https://quantumwealthkapital.com)
 
 
 
-Autonomous technology platform serving QWK LLC and the Quantum Wealth Kapital ecosystem. Orchestrates a multi-agent swarm across 6 specialized agents (4 worker lanes + 2 control), 45 MCP servers (192+ tools), and a modular Bridge relay with deterministic routing, quality scoring, and human-in-the-loop risk gates.
+Autonomous technology platform serving QWK LLC and the Quantum Wealth Kapital ecosystem. Orchestrates a multi-agent swarm across 6 specialized agents (4 worker lanes + 2 control), 55 MCP servers (192+ tools), and a modular Bridge relay with deterministic routing, quality scoring, and human-in-the-loop risk gates.
 
 **Repository**: `Qwkapital/blackstack` (private) | **Branch**: `main`
 
@@ -22,7 +22,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for full system diagrams, planes, and dat
 | Front Door | User intake | Open WebUI (`model=nexus`), Telegram approvals, CLI admin |
 | Control | Orchestration | NEXUS-Core, Bridge v3.9 (2,685 lines, 20 lib modules) |
 | Worker | Execution | Claude (builder/reviewer), Codex (failover), Gemini (researcher), Ghost (Ollama local) |
-| Tool | Capabilities | 45 MCP servers, 192+ tools, 7 original n8n automation skills |
+| Tool | Capabilities | 55 MCP servers, 192+ tools, 7 original n8n automation skills |
 | State | Persistence | Redis (stigmergy), Qdrant (5 collections, BGE-M3 embeddings), Git |
 
 ## Policy Context
@@ -46,7 +46,7 @@ This gap affects all 4,336 FDIC-insured institutions. BlackStack v3.0 documents 
 | L1-principal | Principal layer | Personal workspace (private) |
 | L2-corporate | Corporate (QWK/QKT) | Entity, strategy, compliance, decisions (DEC-001-021) |
 | L3-governance | Tech governance | 103 policies, 6 agent specs, 26 audit modules |
-| L4-engineering | Engineering | 45 MCP servers by department (core, data, services, platform, presentation) |
+| L4-engineering | Engineering | 55 MCP servers by department (core, data, services, platform, presentation) |
 | L5-infrastructure | Infrastructure | Bridge runtime (20 lib modules), Docker, n8n v2.21.5, Redis, Qdrant |
 | L6-operations | Operations | 105+ scripts, 10 hook guards, 36-entry crontab, Ed25519 audit signing |
 | L7-marketing | Marketing | Brand, web (public_html), i18n (6 languages) |
@@ -119,3 +119,4 @@ See [RESEARCH.md](RESEARCH.md) for full details, regulatory alignment table, and
 BlackStack is built and operated by a single principal engineer. The private repository (`Qwkapital/blackstack`) contains the full operational codebase. This public repository (`Qwkapital/blackstack-public`) contains architecture documentation, governance framework references, and public-facing specifications.
 
 All modules are production-deployed and operationally validated before version tagging.
+
